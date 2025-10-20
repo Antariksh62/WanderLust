@@ -1,0 +1,133 @@
+<% layout("/layouts/boilerplate") -%>
+
+<body>
+    <br>
+    <h3 style="text-align: center;">Edit Listing details</h3>
+    <br>
+
+    <div class="row">
+        <div class="col-8 offset-2">
+            <form 
+                method="POST" 
+                action="/listings/<%=listing._id%>?_method=PUT" 
+                novalidate class="needs-validation"
+                enctype="multipart/form-data"
+                >
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input 
+                        type="text" 
+                        name="listing[title]" 
+                        placeholder="Enter title" 
+                        class="form-control" 
+                        value = "<%=listing.title%>"
+                        required
+                        >
+                        <div class="valid-feedback">Title looks good!</div>
+                        <div class="invalid-feedback">Enter a valid Title!</div> 
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <input 
+                        type="text" 
+                        name="listing[description]" 
+                        placeholder="Enter description" 
+                        class="form-control" 
+                        value = "<%=listing.description%>"
+                        required
+                        >
+                        <div class="invalid-feedback">Enter a valid description!</div>
+                </div>
+
+                <!-- <div class="mb-3">
+                    <label for="image" class="form-label">Upload new Image</label>
+                    <input 
+                        type="file" 
+                        name="listing[image]" 
+                        placeholder="Enter image url/link" 
+                        class="form-control" 
+                        value = "<%=listing.image.url%>"
+                        >
+                </div> -->
+
+                <div class="mb-3">
+                    <label class="form-label">Current Image</label><br>
+                    <img src="<%= listing.image.url %>" style="max-height: 150px; border-radius: 5px;">
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Upload a New Image (optional)</label>
+                    <input 
+                        type="file" 
+                        name="listing[image]"  class="form-control" 
+                        >
+                </div>
+                
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price</label>
+                    <input 
+                        type="text" 
+                        name="listing[price]" 
+                        placeholder="Enter price" 
+                        class="form-control" 
+                        value = "<%=listing.price%>"
+                        required
+                        >   
+                        <div class="invalid-feedback">Price should be valid!</div> 
+                </div>
+                
+                <div class="row">
+                    <div class="mb-3 col-md-8">
+                        <label for="location" class="form-label">Location</label>
+                        <input 
+                            type="text" 
+                            name="listing[location]" 
+                            placeholder="Enter location" 
+                            class="form-control" 
+                            value = "<%=listing.location%>"
+                            required
+                            >
+                            <div class="invalid-feedback">Location should be valid!</div> 
+                    </div>
+                    
+                    <div class="mb-3 col-md-4">
+                        <label for="country" class="form-label">Country</label>
+                        <input 
+                            type="text" 
+                            name="listing[country]" 
+                            placeholder="Enter country" 
+                            class="form-control" 
+                            value = "<%=listing.country%>"
+                            required
+                            >
+                            <div class="invalid-feedback">Country should be valid!</div> 
+                    </div>
+                </div>
+                
+
+
+                <!-- this was used previously before i got to know bootstrap forms -->
+                <!-- <input name = "listing[title]" placeholder = "Enter title" type="text">
+                <br><br>
+                <input name = "listing[description]" placeholder = "Enter description" type="text">
+                <br><br>
+                <input name = "listing[image]" placeholder = "Enter image URL/link" type="text">
+                <br><br>
+                <input name = "listing[price]" placeholder = "Enter price" type="text">
+                <br><br>
+                <input name = "listing[location]" placeholder = "Enter location" type="text">
+                <br><br>
+                <input name = "listing[country]" placeholder = "Enter country" type="text">
+                <br><br> -->
+
+                <br>
+                <button class="btn btn-dark">
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+    <script src="/js/script.js"></script>
+
+</body>

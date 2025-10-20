@@ -1,0 +1,170 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container{
+    flex: 1;
+}
+
+/* navbar */
+
+.navbar{
+    height: 4rem;
+    background-color: white;
+    /* margin-bottom: 2rem !important; */
+}
+
+.fa-compass{
+    color: #ff385c;
+    font-size: 2rem;
+}
+
+.nav-link{
+    color: #222222 !important;
+}
+
+
+/* cards */
+.listing-card{
+    border: none !important;
+    margin-bottom: 2rem;
+}
+
+
+
+
+.card-img-top{
+    /* bs-border-radius: 0rem; */
+    border-radius: 1rem !important;
+    width: 100%;
+    object-fit: cover !important;
+}
+
+.card-body{
+    padding: 0 !important;
+}
+
+.card-body-showejs{
+    padding: 0 !important;
+    width: 30rem;
+    align-self: center;
+}
+
+.card-text p{
+    font-weight: 400;
+    
+}
+
+.card-img-overlay{
+    opacity: 0;
+}
+
+.card-img-overlay:hover {
+    opacity: 0.1;
+    background-color: white;
+    
+}
+
+
+/* footer */
+.f-info-links a{
+    text-decoration: none;
+    color: #222222;
+}
+
+.f-info-links a:hover{
+    text-decoration: underline;
+}
+
+.f-info-socials,
+.f-brand-name,
+.f-info-links{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: space-evenly;
+    text-align: center;
+}
+
+.f-info-socials{
+    font-size: 1.2rem;
+}
+
+.f-info-socials i{
+    margin-right: 0.5rem;
+}
+
+.f-info{
+    height: 6rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: space-evenly;
+    text-align: center;
+}
+
+.fa-meta {
+    --fa: "\e49b";
+    margin-left: 12px;
+}
+
+
+/* new */
+.btn{
+    background-color: #ff385c !important;
+    border: none !important;
+}
+
+/* show pg */
+.show-img{
+    height: 30vh;
+}
+
+.col a:hover{
+    text-decoration: underline !important;
+}
+
+.showejs-btn-blk{
+    align-self: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/*the OR line between SignUp and Login */
+.divider {
+  display: flex; /* Enables flexbox layout */
+  align-items: center; /* Vertically aligns the items */
+  text-align: center;
+  color: #a8a8a8; /* Color of the 'OR' text */
+}
+
+.divider span {
+  padding: 0 18px; /* Adds space around the 'OR' text */
+}
+
+.divider::before,
+.divider::after {
+  content: ''; /* Required for pseudo-elements */
+  flex: 1; /* Allows the lines to grow and take up available space */
+  border-bottom: 1px solid #dbdbdb; /* Creates the line */
+  margin: 0 10px; /* Optional: adds a little space between the line and the 'OR' text */
+}
+
+
+
+/* map */
+#map {
+    height: 400px;
+    width: 480px;
+}
+
+
+/* filers and filter  */
+#filters .fiter i {
+  text-transform: none;
+}

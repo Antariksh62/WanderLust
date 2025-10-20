@@ -1,0 +1,115 @@
+<% layout("/layouts/boilerplate") -%>
+
+<body>
+    <br>
+    <h3 style="text-align: center;">Create a new listing</h3>
+    <br>
+
+    <div class="row">
+        <div class="col-8 offset-2">
+            <form 
+                action="/listings" 
+                method="POST" 
+                novalidate class="needs-validation" 
+                enctype="multipart/form-data"
+            >
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input 
+                        type="text" 
+                        name="listing[title]" 
+                        placeholder="Enter title" 
+                        class="form-control"
+                        required
+                        >
+                        <div class="valid-feedback">Title looks good!</div>
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <input 
+                        type="text" 
+                        name="listing[description]" 
+                        placeholder="Enter description" 
+                        class="form-control"
+                        required
+                        >
+                        <div class="invalid-feedback">Enter a valid description!</div>
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image</label>
+                    <input 
+                        type="file" 
+                        name="listing[image]" 
+                        placeholder="Upload image" 
+                        class="form-control"
+                    >
+                </div>
+                
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price</label>
+                    <input 
+                        name="listing[price]" 
+                        placeholder="Enter price" 
+                        class="form-control"
+                        required
+                        >    
+                        <div class="invalid-feedback">Price should be valid!</div>
+                </div>
+                
+                <div class="row">
+                    <div class="mb-3 col-md-8">
+                        <label for="location" class="form-label">City, Country</label>
+                        <input 
+                            type="text" 
+                            name="listing[location]" 
+                            placeholder="Enter location" 
+                            class="form-control"
+                            required
+                            >
+                            <div class="invalid-feedback">City and Country should be valid!</div>
+                    </div>
+                    
+                    <div class="mb-3 col-md-4">
+                        <label for="country" class="form-label">Country</label>
+                        <input 
+                            type="text" 
+                            name="listing[country]" 
+                            placeholder="Enter country" 
+                            class="form-control"
+                            required
+                        >
+                        <div class="invalid-feedback">Country should be valid!</div>
+
+                    </div>
+                </div>
+                
+
+
+                <!-- this was used previously before i got to know bootstrap forms -->
+                <!-- <input name = "listing[title]" placeholder = "Enter title" type="text">
+                <br><br>
+                <input name = "listing[description]" placeholder = "Enter description" type="text">
+                <br><br>
+                <input name = "listing[image]" placeholder = "Enter image URL/link" type="text">
+                <br><br>
+                <input name = "listing[price]" placeholder = "Enter price" type="text">
+                <br><br>
+                <input name = "listing[location]" placeholder = "Enter location" type="text">
+                <br><br>
+                <input name = "listing[country]" placeholder = "Enter country" type="text">
+                <br><br> -->
+
+                <br>
+                <button class="btn btn-dark">
+                    Add
+                </button>
+            </form>
+        </div>
+    </div>
+
+    
+</body>

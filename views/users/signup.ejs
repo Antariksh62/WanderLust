@@ -1,0 +1,85 @@
+<%- layout("/layouts/boilerplate") %>
+
+<br>
+
+
+
+
+<div class="row mt-3">
+    <div class="col-6 offset-3">
+
+        <h3 class="mt-2" style="text-align: center;">SignUp for Wanderlust</h3>
+
+        <div class="divider mb-2">
+        <span>OR</span>
+        </div>
+
+        <a href="/login" style="display: flex; justify-content: center; text-decoration: none;"><button class="btn btn-dark mb-4">LogIn</button></a>
+
+
+        <form 
+            action="/signup"
+            method="POST"
+            class="needs-validation"
+            novalidate
+        >
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input 
+                    type="text" 
+                    id="name"
+                    name="name" 
+                    placeholder="Enter Name" 
+                    class="form-control"
+                    required
+                >
+                    <div class="valid-feedback">Name is awesome!</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input 
+                    type="text" 
+                    id="username"
+                    name="username" 
+                    placeholder="Enter Username" 
+                    class="form-control"
+                    required
+                >
+                    <div class="valid-feedback">Username looks good!</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input 
+                    type="text" 
+                    id="email"
+                    name="email" 
+                    placeholder="Enter Email" 
+                    class="form-control"
+                    required
+                >
+                    <div class="valid-feedback">Email looks good!</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Set Password</label>
+                <input 
+                    type="password" 
+                    id="password"
+                    name="password" 
+                    placeholder="Enter Password" 
+                    class="form-control"
+                    required
+                >
+                    <div class="valid-feedback">Password is secure!</div>
+            </div>
+
+
+            <button class="btn btn-dark">SignUp</button>
+
+        </form>
+
+    </div>
+</div>
