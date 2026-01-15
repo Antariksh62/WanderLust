@@ -52,63 +52,89 @@
     <!-- <h3 style="text-align: center !important;" >All Listings</h3> -->
 
     <div id="filters" style="text-transform: none !important;">
-        <div class="filter">
-            <i class="fa-solid fa-fire"></i>
-            <p>Trending</p>
-        </div>
 
-        <div class="filter">
-            <i class="fa-solid fa-bed"></i>
-            <p>Rooms</p>
-        </div>
+        <a href="/listings?category=Trending" class="filter-link">
+            <div class="filter">
+                <div><i class="fa-solid fa-fire"></i></div>
+                <p>Trending</p>
+            </div>
+        </a>
 
-        <div class="filter">
-            <i class="fa-solid fa-crown"></i>
-            <p>Royal</p>
-        </div>
+        <a href="/listings?category=Rooms" class="filter-link">
+            <div class="filter">
+                <div><i class="fa-solid fa-bed"></i></div>
+                <p>Rooms</p>
+            </div>
+        </a>
 
-        <div class="filter">
-            <i class="fa-solid fa-mountain-city"></i>
-            <p>Iconic</p>
-        </div>
+        <a href="/listings?category=Royal">
+            <div class="filter">
+                <i class="fa-solid fa-crown"></i>
+                <p>Royal</p>
+            </div>
+        </a>
 
-        <div class="filter">
-            <i class="fa-solid fa-mountain"></i>
-            <p>Mountains</p>
-        </div>
+        <a href="/listings?category=Iconic">
+            <div class="filter">
+                <i class="fa-solid fa-mountain-city"></i>
+                <p>Iconic</p>
+            </div>
+        </a>
 
-        <div class="filter">
-            <i class="fa-solid fa-person-swimming"></i>
-            <p>Amazing pools</p>
-        </div>
+        <a href="/listings?category=Moutains">
+            <div class="filter">
+                <i class="fa-solid fa-mountain"></i>
+                <p>Mountains</p>
+            </div>
+        </a>
 
-        <div class="filter">
-            <i class="fa-solid fa-campground"></i>
-            <p>Camping</p>
-        </div>
+        <a href="/listings?category=AmazingPools">
+            <div class="filter">
+                <i class="fa-solid fa-person-swimming"></i>
+                <p>Amazing pools</p>
+            </div>
+        </a>
 
-        <div class="filter">
-            <i class="fa-solid fa-cow"></i>
-            <p>Farms</p>
-        </div>
 
-        <div class="filter">
-            <i class="fa-solid fa-snowflake"></i>
-            <p>Arctic</p>
-        </div>
+        <a href="/listings?category=Camping">
+            <div class="filter">
+                <i class="fa-solid fa-campground"></i>
+                <p>Camping</p>
+            </div>
+        </a>
 
-        <div class="filter">
-            <i class="fa-solid fa-ship"></i>
-            <p>Boats</p>
-        </div>
+        <a href="/listings?category=Farms">
+            <div class="filter">
+                <i class="fa-solid fa-cow"></i>
+                <p>Farms</p>
+            </div>
+        </a>
 
-        <div class="tax-switch">
+        <a href="/listings?category=Arctic">
+            <div class="filter">
+                <i class="fa-solid fa-snowflake"></i>
+                <p>Arctic</p>
+            </div>
+        </a>
+
+        <a href="/listings?category=Boats">
+            <div class="filter">
+                <i class="fa-solid fa-ship"></i>
+                <p>Boats</p>
+            </div>
+        </a>
+
+
+
+        <div class="tax-switch" style="border: none;" >
             <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
-                <label class="form-check-label" for="switchCheckDefault">Display total price incl of GST</label>
+                <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault" >
+                <label class="form-check-label" for="switchCheckDefault">Price incl of GST</label>
                 <!-- Taxes in IND are like 5% on amount upto 7500 and 18% on 7501 , ik it sucks but welcome to IND-->
             </div>
         </div>
+
+
 
 
 
@@ -116,6 +142,15 @@
 
     <br>
 
+    <% if(allListings.length === 0) { %>
+        <div class="alert alert-danger col-8 offset-2 mt-5" role="alert" style="text-align: center;">
+            <h4 class="alert-heading"><i class="fa-solid fa-triangle-exclamation"></i> No Listings Found!</h4>
+            <p>We couldn't find any matches for "<b><%= search %></b>".</p>
+            <p class="mb-0">Try searching for a different location or check your spelling.</p>
+            <a href="/listings" class="btn btn-outline-danger mt-3">View All Listings</a>
+        </div>
+    <% } %>
+    
     <div class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1 listing-card">
         <% for(let listing of allListings) {%>
 
@@ -185,6 +220,7 @@
 
         let basePrice = document.querySelectorAll(".basePrice");
         let finalPrice = document.querySelectorAll(".finalPrice");
+        
 
         if(taxSwitch.checked){
             for(let price of basePrice) {
@@ -193,6 +229,7 @@
             for(let price of finalPrice) {
                 price.style.display = "block";
             }
+            taxSwitch.setAttribute("background-color", "#ff385c");
         }
         else{
             for(let price of basePrice){

@@ -1,12 +1,20 @@
 <style>
   .search{
     border-radius: 17px;
-    width: 250px;
+    width: 300px;
+  }
+
+  .btn-outline-success{
+    border-radius: 50%;
   }
 </style>
 
+
+
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+
   <div class="container-fluid">
+
     <a class="navbar-brand" href="/listings"><i class="fa-solid fa-compass"></i></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -19,10 +27,20 @@
           <a class="nav-link" href="/listings/new">Add new Listing</a>
       </div>
 
+
       <div class="navbar-nav ms-auto">
-        <form class="d-flex" role="search">
-          <input class="form-control me-2 search" type="search" placeholder="Search destinations" />
-          <button class="btn btn-outline-success" style="color: white;" type="submit"><i class="fa-solid fa-magnifying-glass" style="display: inline; "></i></button>
+        <form class="d-flex" role="search" action="/listings" method="GET">
+          <input 
+            class="form-control me-2 search" 
+            type="search" 
+            name="search" 
+            placeholder="Search destination" 
+            aria-label="Search"
+            value="<%= typeof search != 'undefined' ? search : '' %>" 
+          >
+          <button class="btn btn-search" style="background-color: #fe424d; color: white; border-radius: 25px; padding: 0 1rem;" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i> Search
+          </button>
         </form>
       </div>
 
@@ -36,6 +54,12 @@
         <% if(currUser) { %>
           <a class="nav-link" href="/logout">LogOut</a>
         <% } %>
+      </div>
+
+      <div class="navbar-nav ms-auto" style="margin-left: 10px !important;">
+          <button class="nav-link btn btn-link" id="darkModeToggle">
+              <i class="fa-regular fa-moon" id="themeIcon"></i>
+          </button>
       </div>
 
 

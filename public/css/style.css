@@ -5,17 +5,20 @@ body{
     min-height: 100vh;
 }
 
-.container{
-    flex: 1;
-}
-
 /* navbar */
-
-.navbar{
+.navbar {
     height: 4rem;
-    background-color: white;
-    /* margin-bottom: 2rem !important; */
+    background-color: var(--nav-bg);  /* Uses the variable */
+    
 }
+
+/* Apply the text color variable to all links inside */
+.navbar a, 
+.navbar .nav-link {
+    color: var(--nav-text) !important; /* Uses the variable */
+}
+
+
 
 .fa-compass{
     color: #ff385c;
@@ -115,7 +118,7 @@ body{
 
 /* new */
 .btn{
-    background-color: #ff385c !important;
+    background-color: inherit;
     border: none !important;
 }
 
@@ -167,4 +170,23 @@ body{
 /* filers and filter  */
 #filters .fiter i {
   text-transform: none;
+}
+
+
+/* 1. Force the background and border color */
+.btn-brand,
+[data-bs-theme="dark"] .btn-brand,
+[data-bs-theme="light"] .btn-brand {
+    background-color: #ff385c !important;
+    border-color: #ff385c !important;
+    color: white !important; /* Keeps text white & readable */
+}
+
+/* 2. Add a hover effect so it doesn't look "dead" */
+.btn-brand:hover,
+[data-bs-theme="dark"] .btn-brand:hover,
+[data-bs-theme="light"] .btn-brand:hover {
+    background-color: #e02f50 !important; /* A slightly darker shade for interaction */
+    border-color: #e02f50 !important;
+    color: white !important;
 }

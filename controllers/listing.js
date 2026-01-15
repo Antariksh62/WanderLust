@@ -6,19 +6,36 @@ const geoCodingClient = mbxGeocoding({ accessToken: mapToken });
 
 
 module.exports.index = async (req, res) => {
-    try {
-        const allListings = await Listing.find({});
-        res.render("listings/index.ejs", { allListings });
-    } catch (err) {
-        console.log(err);
+    const { search, category } = req.query; 
+    let allListings;
+
+    if (search) {
+        // SEARCH LOGIC
+        const cleanSearch = search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        allListings = await Listing.find({
+            $or: [
+                { title: { $regex: cleanSearch, $options: "i" } },
+                { location: { $regex: cleanSearch, $options: "i" } },
+                { country: { $regex: cleanSearch, $options: "i" } },
+                { category: { $regex: cleanSearch, $options: "i" } } 
+            ]
+        });
+    } else if (category) {
+        allListings = await Listing.find({ category: category });
+    } else {
+        allListings = await Listing.find({});
     }
-}
+
+    res.render("listings/index.ejs", { allListings, search, category });
+};
+
 
 module.exports.renderNewForm = (req, res) => {
     console.log(req.user);
     //middleware.js 
     res.render("listings/new.ejs");
 }
+
 
 module.exports.showListing = async (req, res) => {
     let { id } = req.params;
@@ -38,37 +55,6 @@ module.exports.showListing = async (req, res) => {
     res.render("listings/show.ejs", { listing });
 }
 
-
-
-// controllers/listing.js
-//OLD STUFF WHICH WAS GIVING ISSUES
-// module.exports.createListing = async (req, res, next) => {
-
-//     /* This one line sends the req.file object directly to the browser */
-//     // res.send(req.file);
-
-//     let response = await geoCodingClient
-//         .forwardGeocode({
-//             query: 'Pune, Maharashtra',
-//             limit: 1,
-//         })
-//         .send();
-
-//     console.log(response.body.features[0].geometry);
-//     res.send("done !");
-
-//     let url = req.file.path;
-//     let filename = req.file.filename;
-//     console.log(`url : ${url}\nfilename : ${filename}`);
-
-//     const newListing = new Listing(req.body.listing);
-//     newListing.owner = req.user.id;
-//     newListing.image = {url, filename};
-//     await newListing.save();
-
-//     req.flash("Success", "new Listing was Created");
-//     res.redirect("/listings");
-// };
 
 //NEW CODE, WOKRKS GOOD, FOR NOW
 module.exports.createListing = async (req, res, next) => {
@@ -100,9 +86,7 @@ module.exports.createListing = async (req, res, next) => {
 };
 
 
-
-
-  module.exports.editListing = async (req, res) => {
+module.exports.editListing = async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id);
     if(!listing){
@@ -160,7 +144,6 @@ module.exports.updateListing = async (req, res) => {
 
 
 module.exports.destroyListing = async (req, res) => {
-        
     console.log(`[DELETE /listings/:id] Route handler started.`);
     let { id } = req.params;
     
@@ -170,4 +153,30 @@ module.exports.destroyListing = async (req, res) => {
     req.flash("success", "Listing Deleted Successfully");
     console.log(`[DELETE /listings/:id] Logic complete. Redirecting now.`);
     res.redirect("/listings");
+}
+
+
+//using regex as it gives the best results instead of only mongodb commands
+module.exports.index = async(req, res) => {
+    const { search, category } = req.query;
+    let allListings;
+
+    if(search){
+        allListings = await Listing.find({
+            $or : [
+                { title : {$regex : search, $options : 'i'} },
+                {location : {$regex : search, $options : 'i'}},
+                {country : {$regex : search, $options : 'i'}},
+            ]
+        });
+    }
+    else if(category){
+        allListings = await Listing.find({category : category});
+    }
+    else{
+        allListings = await Listing.find({});
+    }
+
+    res.render("listings/index.ejs", { allListings, search });
+
 }

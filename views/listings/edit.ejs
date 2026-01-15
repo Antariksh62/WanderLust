@@ -40,17 +40,6 @@
                         <div class="invalid-feedback">Enter a valid description!</div>
                 </div>
 
-                <!-- <div class="mb-3">
-                    <label for="image" class="form-label">Upload new Image</label>
-                    <input 
-                        type="file" 
-                        name="listing[image]" 
-                        placeholder="Enter image url/link" 
-                        class="form-control" 
-                        value = "<%=listing.image.url%>"
-                        >
-                </div> -->
-
                 <div class="mb-3">
                     <label class="form-label">Current Image</label><br>
                     <img src="<%= listing.image.url %>" style="max-height: 150px; border-radius: 5px;">
@@ -64,6 +53,24 @@
                         >
                 </div>
                 
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category</label>
+                    <select name="listing[category]" class="form-select" required>
+                        <option value="" selected>Select a Category</option>
+                        <option value="Trending">Trending</option>
+                        <option value="Rooms">Rooms</option>
+                        <option value="Iconic">Iconic City</option>
+                        <option value="Mountains">Mountains</option>
+                        <option value="Castles">Castles</option>
+                        <option value="Amazing Pools">Amazing Pools</option>
+                        <option value="Camping">Camping</option>
+                        <option value="Farms">Farms</option>
+                        <option value="Arctic">Arctic</option>
+                        <option value="Boats">Boats</option>
+                    </select>
+                    <div class="invalid-feedback">Please select a category</div>
+                </div>
+
                 <div class="mb-3">
                     <label for="price" class="form-label">Price</label>
                     <input 
@@ -104,25 +111,9 @@
                             <div class="invalid-feedback">Country should be valid!</div> 
                     </div>
                 </div>
-                
-
-
-                <!-- this was used previously before i got to know bootstrap forms -->
-                <!-- <input name = "listing[title]" placeholder = "Enter title" type="text">
-                <br><br>
-                <input name = "listing[description]" placeholder = "Enter description" type="text">
-                <br><br>
-                <input name = "listing[image]" placeholder = "Enter image URL/link" type="text">
-                <br><br>
-                <input name = "listing[price]" placeholder = "Enter price" type="text">
-                <br><br>
-                <input name = "listing[location]" placeholder = "Enter location" type="text">
-                <br><br>
-                <input name = "listing[country]" placeholder = "Enter country" type="text">
-                <br><br> -->
 
                 <br>
-                <button class="btn btn-dark">
+                <button class="btn btn-dark btn-dark">
                     Submit
                 </button>
             </form>

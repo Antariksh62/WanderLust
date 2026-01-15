@@ -21,22 +21,34 @@
                         placeholder="Enter title" 
                         class="form-control"
                         required
-                        >
-                        <div class="valid-feedback">Title looks good!</div>
-
+                    >
+                    <div class="valid-feedback">Title looks good!</div>
                 </div>
 
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <input 
-                        type="text" 
+                    
+                    <div class="input-group mb-2">
+                        <input type="text" id="ai-keywords" class="form-control" placeholder="Keywords (e.g., beach, luxury, pool)">
+                        <button
+                            class="btn btn-dark"
+                            style="background-color: rgb(255, 56, 92) !important;"
+                            type="button"
+                            onclick="generateDescription(event)"   <!-- ✅ CHANGED -->
+                        >
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Magic Generate
+                        </button>
+                    </div>
+
+                    <textarea 
                         name="listing[description]" 
+                        id="description" 
                         placeholder="Enter description" 
                         class="form-control"
                         required
-                        >
-                        <div class="invalid-feedback">Enter a valid description!</div>
-
+                        rows="4"
+                    ></textarea>
+                    <div class="invalid-feedback">Enter a valid description!</div>
                 </div>
 
                 <div class="mb-3">
@@ -44,9 +56,26 @@
                     <input 
                         type="file" 
                         name="listing[image]" 
-                        placeholder="Upload image" 
                         class="form-control"
                     >
+                </div>
+
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category</label>
+                    <select name="listing[category]" class="form-select" required>
+                        <option value="" selected>Select a Category</option>
+                        <option value="Trending">Trending</option>
+                        <option value="Rooms">Rooms</option>
+                        <option value="Iconic">Iconic City</option>
+                        <option value="Mountains">Mountains</option>
+                        <option value="Castles">Castles</option>
+                        <option value="Amazing Pools">Amazing Pools</option>
+                        <option value="Camping">Camping</option>
+                        <option value="Farms">Farms</option>
+                        <option value="Arctic">Arctic</option>
+                        <option value="Boats">Boats</option>
+                    </select>
+                    <div class="invalid-feedback">Please select a category</div>
                 </div>
                 
                 <div class="mb-3">
@@ -56,8 +85,8 @@
                         placeholder="Enter price" 
                         class="form-control"
                         required
-                        >    
-                        <div class="invalid-feedback">Price should be valid!</div>
+                    >    
+                    <div class="invalid-feedback">Price should be valid!</div>
                 </div>
                 
                 <div class="row">
@@ -69,8 +98,8 @@
                             placeholder="Enter location" 
                             class="form-control"
                             required
-                            >
-                            <div class="invalid-feedback">City and Country should be valid!</div>
+                        >
+                        <div class="invalid-feedback">City and Country should be valid!</div>
                     </div>
                     
                     <div class="mb-3 col-md-4">
@@ -83,33 +112,49 @@
                             required
                         >
                         <div class="invalid-feedback">Country should be valid!</div>
-
                     </div>
                 </div>
-                
-
-
-                <!-- this was used previously before i got to know bootstrap forms -->
-                <!-- <input name = "listing[title]" placeholder = "Enter title" type="text">
-                <br><br>
-                <input name = "listing[description]" placeholder = "Enter description" type="text">
-                <br><br>
-                <input name = "listing[image]" placeholder = "Enter image URL/link" type="text">
-                <br><br>
-                <input name = "listing[price]" placeholder = "Enter price" type="text">
-                <br><br>
-                <input name = "listing[location]" placeholder = "Enter location" type="text">
-                <br><br>
-                <input name = "listing[country]" placeholder = "Enter country" type="text">
-                <br><br> -->
 
                 <br>
-                <button class="btn btn-dark">
-                    Add
-                </button>
+                <button class="btn btn-dark btn-brand">Add</button>
             </form>
         </div>
     </div>
 
-    
+    <script>
+        async function generateDescription(event) {
+            event.preventDefault(); // ✅ ADDED
+
+            const keywords = document.getElementById("ai-keywords").value;
+            const descBox = document.getElementById("description");
+            
+            if (!keywords) return alert("Please enter some keywords first!");
+
+            descBox.value = "✨ Generating magic description... please wait...";
+            descBox.disabled = true;
+
+            try {
+                const response = await fetch("/listings/ai-generate", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ prompt: keywords })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    descBox.value = data.description;
+                } else {
+                    descBox.value = "";
+                    alert("Error: " + (data.message || "Could not generate text"));
+                }
+            } catch (error) {
+                console.error(error);
+                descBox.value = "";
+                alert("Something went wrong! Check your console.");
+            } finally {
+                descBox.disabled = false;
+            }
+        }
+    </script>
 </body>

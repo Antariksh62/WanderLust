@@ -1,9 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+
+        // This runs before the page content renders as we are including it in the head
+        const storedTheme = localStorage.getItem("theme");
+        if (storedTheme === "dark") {
+            document.documentElement.setAttribute("data-bs-theme", "dark");
+        }
+        
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WanderLust</title>
+    <title>NomadStay</title>
 
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">

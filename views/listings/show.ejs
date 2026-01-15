@@ -17,7 +17,6 @@
             <br>
 
             <div class="card listing-card" >
-                <!-- <img src="<%= listing.image.url %>" class="card-img-top show-img" style="width: 30rem; height: 15rem; align-self: center;" alt="..."> -->
                 <img src="<%= listing.image.url  %>" class="card-img-top" alt="listing_image" style="height: 320px; width: 456px; align-self: center;">
                 <!-- WE ARE USING  this listing.image.url -->
  
@@ -26,6 +25,7 @@
                     <p>Owned By : <%= listing.owner.name %></p>
                     <p>Owner username : <%= listing.owner.username %></p>
                     <p class="card-text"><%= listing.description %></p>
+                    <p>Category of Listing : <%= listing.category %></p>
                     <p>Price : &#8377;<%= listing.price.toLocaleString("en-IN") %></p>
                     <p>Country : <%= listing.country %></p>
                     <p>Location : <%= listing.location %></p>
@@ -50,12 +50,12 @@
                 <% if(currUser && currUser._id.equals(listing.owner._id)) {%>
 
                     <div class="showejs-btn-blk" style="width: 30rem;">
-                        <a href="/listings/<%=listing._id%>/edit"  class="btn btn-dark" style="background-color: black !important; display: inline;" >Edit this listing</a>
+                        <a href="/listings/<%=listing._id%>/edit"  class="btn btn-dark btn-brand" style="background-color: black ; display: inline;" >Edit this listing</a>
 
-                        <a href="/listings" class="btn btn-dark" style="background-color: black !important; display: inline;" >Go to Listings</a>
+                        <a href="/listings" class="btn btn-dark btn-brand" style="background-color: black ; display: inline;" >Go to Listings</a>
 
                         <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE" style="display: inline;">
-                            <button class="btn btn-dark">
+                            <button class="btn btn-dark btn-brand">
                                 Delete
                             </button>
                         </form>
@@ -159,7 +159,7 @@
                                 method="POST"
                                 action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" 
                                 >
-                                <button class="btn btn-sm btn-dark" style="background-color: black !important; margin: 0px 10px 10px 10px;">
+                                <button class="btn btn-sm btn-dark btn-brand" style="background-color: black !important; margin: 0px 10px 10px 10px;">
                                     Delete
                                 </button>
                             </form>

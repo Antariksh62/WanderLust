@@ -19,6 +19,12 @@ const listingSchema = new Schema({
 
     country: String,
 
+    category: {
+        type: String,
+        enum: ["Trending", "Rooms", "Iconic", "Mountains", "Castles", "Amazing Pools", "Camping", "Farms", "Arctic", "Boats"],
+        required: false,
+    },
+
     reviews: [
         {
             type: Schema.Types.ObjectId,
@@ -59,46 +65,3 @@ module.exports = Listing;
 
 
 
-
-
-// const mongoose = require('mongoose');
-// const Review = require('./review');
-// const { types, ref } = require('joi');
-// const Schema = mongoose.Schema;
-
-// // main().catch(err => console.log(err));
-// // async function main() {
-// //   await mongoose.connect('mongodb://127.0.0.1:27017/test');
-// //   // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
-// // }
-
-// const listingSchema = new Schema({
-//     title : {
-//         type : String,
-//         required : true,
-//     },
-//     description : String,
-//     image : {
-//         url: String,
-//         filename: String,
-//     },
-//     price : Number,
-//     location : String,
-//     country : String,
-//     reviews : [
-//         {
-//             type : Schema.Types.ObjectId,
-//             ref : "Review",
-//         },
-//     ]
-// })
-
-// // Middleware: after a listing is deleted, remove all its reviews
-// listingSchema.post("findOneAndDelete", async function (doc) {
-//     if (doc) {
-//         await Review.deleteMany({ _id: { $in: doc.reviews } });
-//     }
-// });
-
-// const Listing = mongoose.model("Listing", listingSchema);
-// module.exports = Listing;
