@@ -164,8 +164,8 @@ app.use("/listings/:id/reviews", reviewsRouter);
 app.use("/", userRouter);
 
 app.get("/", (req, res) => {
-    console.log("Proof that Tony stark has a heart");
     res.send("Proof that Tony stark has a heart");
+    res.redirect("/listings");
 });
 
 //to handle : when you enter a route that does not exist
