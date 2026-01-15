@@ -164,7 +164,7 @@ app.use("/listings/:id/reviews", reviewsRouter);
 app.use("/", userRouter);
 
 app.get("/", (req, res) => {
-    res.send("Proof that Tony stark has a heart");
+    console.log("Proof that Tony stark has a heart");
     res.redirect("/listings");
 });
 
