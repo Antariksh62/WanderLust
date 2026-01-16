@@ -1,33 +1,33 @@
 // Example starter JavaScript for disabling form submissions if there are invalid fields
-//so what i did is, went to new.js, referred to form validation section in bootstarp, specified novalidate and class="needs-validation" in the form in new.js doc, made a file in public/js/script.js which is this file and the js code i took from bootstrap's form validation
-
 (() => {
   'use strict'
-
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
   const forms = document.querySelectorAll('.needs-validation')
 
-  // Loop over them and prevent submission
   Array.from(forms).forEach(form => {
     form.addEventListener('submit', event => {
       if (!form.checkValidity()) {
         event.preventDefault()
         event.stopPropagation()
       }
-
       form.classList.add('was-validated')
     }, false)
   })
-})
+})()
 
-
-
-
+// DARK MODE LOGIC
 document.addEventListener("DOMContentLoaded", () => {
   const toggleBtn = document.getElementById("darkModeToggle");
   const themeIcon = document.getElementById("themeIcon");
+  const filters = document.getElementsByClassName("filter-link"); // Defined as 'filters'
   const htmlElement = document.documentElement;
   const navbar = document.querySelector(".navbar");
+
+  // Helper function to change color
+  const changeFilterColor = (color) => {
+     for (let filter of filters) {
+      filter.style.color = color;
+    }
+  };
 
   const setNavbarDark = () => {
     if (navbar) {
@@ -43,37 +43,52 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // Check Local Storage on Page Load
   if (localStorage.getItem("theme") === "dark") {
     htmlElement.setAttribute("data-bs-theme", "dark");
-    themeIcon.classList.remove("fa-regular"); 
-    themeIcon.classList.add("fa-solid");
+    if (themeIcon) {
+        themeIcon.classList.remove("fa-regular");
+        themeIcon.classList.add("fa-solid");
+    }
     setNavbarDark();
-  } else {
-    
+    changeFilterColor("white"); 
+  } 
+    else {
+    htmlElement.setAttribute("data-bs-theme", "light"); // Ensure light is set if not dark
     setNavbarLight();
+     changeFilterColor("black");
   }
 
+  // Handle Button Click
   if (toggleBtn) {
     toggleBtn.addEventListener("click", () => {
       const currtheme = htmlElement.getAttribute("data-bs-theme");
 
       if (currtheme === "dark") {
-        htmlElement.setAttribute("data-bs-theme", "light");
-        themeIcon.classList.remove("fa-solid");
-        themeIcon.classList.add("fa-regular");
+         htmlElement.setAttribute("data-bs-theme", "light");
         
-        setNavbarLight(); 
-        
-        localStorage.setItem("theme", "light"); 
-      } else {
+        if (themeIcon) {
+            themeIcon.classList.remove("fa-solid");
+            themeIcon.classList.add("fa-regular");
+        }
 
-        htmlElement.setAttribute("data-bs-theme", "dark");
-        themeIcon.classList.remove("fa-regular");
-        themeIcon.classList.add("fa-solid");
+         changeFilterColor("black"); 
         
-        setNavbarDark(); 
+        setNavbarLight();
+        localStorage.setItem("theme", "light");
+
+      } else {
+         htmlElement.setAttribute("data-bs-theme", "dark");
         
-        localStorage.setItem("theme", "dark"); 
+        if (themeIcon) {
+            themeIcon.classList.remove("fa-regular");
+            themeIcon.classList.add("fa-solid");
+        }
+
+         changeFilterColor("white");
+        
+        setNavbarDark();
+        localStorage.setItem("theme", "dark");
       }
     });
   }
