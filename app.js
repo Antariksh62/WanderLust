@@ -10,8 +10,7 @@ TO IMPLEMENT:
 3. A CLASSIFICATION FOR ADDING LISTING VIA ENUM IN DB = DONE
 4. ADD AI WRAPPER FOR DESCRIPTION = DONE
 5. DEPLOY = DONE
-
-6. MAKE A FEW FRONTEND CHANGES 
+6. MAKE A FEW FRONTEND CHANGES = DONE
 
 7. USE REDIS IN THIS PROJECT, NO CLUE HOW TO DO IT,BUT YEA WILL LEARN IT
 
@@ -20,8 +19,6 @@ TO IMPLEMENT:
 if(process.env.NODE_ENV != "production"){
     require("dotenv").config();
 }
-
-console.log("In app.js, after dotenv:", process.env.GEMINI_API_KEY);
 
 const express = require("express");
 const app = express();
@@ -43,10 +40,13 @@ const userRouter = require("./routes/user.js");
 
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
+
 const Listing = require("./models/listing.js");
 const Review = require("./models/review.js");
 const wrapAsync = require("./utils/wrapAsync.js");
+
 const ExpressError = require("./utils/ExpressError.js");
+
 const { listingSchema, reviewSchema } = require("./schema.js");
 const review = require("./models/review.js");
 
@@ -63,7 +63,7 @@ async function main() {
 }
 
 app.use(express.urlencoded({extended : true}));
-app.use(express.json()); // ✅ REQUIRED FOR AI ROUTE
+app.use(express.json()); // REQUIRED FOR AI ROUTE
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 // app.use(express.static(path.join(__dirname, "/public")));
@@ -100,11 +100,14 @@ store.on("error", () => {
 
 app.use(session(sessionOptions));
 
+
 /*Passport realted */
 app.use(passport.initialize());
 app.use(passport.session());
+
 // use static authenticate method of model in LocalStrategy
 passport.use(new LocalStrategy(User.authenticate()));
+
 
 // use static serialize and deserialize of model for passport session support
 passport.serializeUser(User.serializeUser());
@@ -136,6 +139,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 // 1. Setup the AI with your API Key
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+
 
 // 2. Create the Route
 app.post("/listings/ai-generate", async (req, res) => {

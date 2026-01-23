@@ -1,10 +1,14 @@
 const mongoose = require("mongoose");
 const Review = require("./review");
+const { required, string } = require("joi");
 const Schema = mongoose.Schema;
 
 const listingSchema = new Schema({
 
-    title: { type: String, required: true },
+    title: { 
+        type: String, 
+        required: true,
+    },
 
     description: String,
 
@@ -13,11 +17,20 @@ const listingSchema = new Schema({
         filename: String,
     },
 
-    price: Number,
+    price: {
+        type : Number,
+        required : true,
+    },
 
-    location: String,
+    location: {
+        type : String,
+        required : true,
+    },
 
-    country: String,
+    country: {
+        type : String,
+        required : true,
+    },
 
     category: {
         type: String,
@@ -39,9 +52,9 @@ const listingSchema = new Schema({
     
     geometry : {
         type: {
-          type: String, // Don't do `{ location: { type: String } }`
-          enum: ['Point'], // 'location.type' must be 'Point'
-          required: true
+          type: String, //Don't do `{ location: { type: String } }`
+          enum: ['Point'], //'location.type' must be 'Point'
+          required: true,
         },
         coordinates: {
           type: [Number],
@@ -62,6 +75,3 @@ if both sides need to reference each other (circular dependency) then we dont pu
 
 const Listing = mongoose.model("Listing", listingSchema);
 module.exports = Listing;
-
-
-

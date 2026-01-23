@@ -71,7 +71,6 @@ module.exports.createListing = async (req, res, next) => {
     let url = req.file.path;
     let filename = req.file.filename;
 
-    // FIX: Ensure you are using lowercase 'listing' here
     const newListing = new Listing(req.body.listing);
     
     newListing.owner = req.user._id;

@@ -14,11 +14,13 @@
   })
 })()
 
-// DARK MODE LOGIC
+
+
+// DARK MODE LOGIC, I swear this one is a litlle tricky, took time to figure out
 document.addEventListener("DOMContentLoaded", () => {
   const toggleBtn = document.getElementById("darkModeToggle");
   const themeIcon = document.getElementById("themeIcon");
-  const filters = document.getElementsByClassName("filter-link"); // Defined as 'filters'
+  const filters = document.getElementsByClassName("filter-link"); 
   const htmlElement = document.documentElement;
   const navbar = document.querySelector(".navbar");
 
