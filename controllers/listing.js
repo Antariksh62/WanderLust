@@ -1,4 +1,5 @@
 const Listing = require("../models/listing");
+const Review = require("../models/review.js");
 
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapToken = process.env.MAP_TOKEN;
@@ -10,7 +11,7 @@ module.exports.index = async (req, res) => {
     let allListings;
 
     if (search) {
-        // SEARCH LOGIC
+        // SEARCH LOGIC with regex special character escaping
         const cleanSearch = search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         allListings = await Listing.find({
             $or: [
@@ -26,15 +27,13 @@ module.exports.index = async (req, res) => {
         allListings = await Listing.find({});
     }
 
-    res.render("listings/index.ejs", { allListings, search, category });
+    res.render("listings/index.ejs", { allListings, search: search || "", category });
 };
 
 
 module.exports.renderNewForm = (req, res) => {
-    console.log(req.user);
-    //middleware.js 
     res.render("listings/new.ejs");
-}
+};
 
 
 module.exports.showListing = async (req, res) => {
@@ -48,39 +47,41 @@ module.exports.showListing = async (req, res) => {
         })
         .populate("owner");
     if(!listing){
-        req.flash("error", "The Listing does exist");
+        req.flash("error", "The listing does not exist!");
         return res.redirect("/listings");
     }
-    console.log(listing);
     res.render("listings/show.ejs", { listing });
-}
+};
 
 
-//NEW CODE, WOKRKS GOOD, FOR NOW
 module.exports.createListing = async (req, res, next) => {
+    let geometry = { type: "Point", coordinates: [77.2090, 28.6139] };
+    try {
+        let response = await geoCodingClient
+            .forwardGeocode({
+                query: req.body.listing.location, 
+                limit: 1,
+            })
+            .send();
+        if (response && response.body && response.body.features && response.body.features.length > 0) {
+            geometry = response.body.features[0].geometry;
+        }
+    } catch (geoErr) {
+        console.error("Geocoding failed, using fallback coordinates:", geoErr.message);
+    }
 
-    let response = await geoCodingClient
-        .forwardGeocode({
-            query: req.body.listing.location, 
-            limit: 1,
-        })
-        .send();
-    
-    console.log(response.body.features[0].geometry);
-
-    let url = req.file.path;
-    let filename = req.file.filename;
+    let url = (req.file && req.file.path) ? req.file.path : "https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?auto=format&fit=crop&w=800&q=60";
+    let filename = (req.file && req.file.filename) ? req.file.filename : "listingimage";
 
     const newListing = new Listing(req.body.listing);
     
     newListing.owner = req.user._id;
     newListing.image = { url, filename };
-    newListing.geometry = response.body.features[0].geometry;
+    newListing.geometry = geometry;
 
-    let savedListing = await newListing.save();
-    console.log(savedListing);
+    await newListing.save();
 
-    req.flash("Success", "New listing was created!");
+    req.flash("success", "New listing was created!");
     res.redirect("/listings");
 };
 
@@ -89,93 +90,52 @@ module.exports.editListing = async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id);
     if(!listing){
-        req.flash("error", "The Listing does exist");
+        req.flash("error", "The listing does not exist!");
         return res.redirect("/listings");
     }
     res.render("listings/edit.ejs", { listing });
-}
+};
 
 
 module.exports.updateListing = async (req, res) => {
-
     let { id } = req.params;
     let listingData = req.body.listing;
-    let listing  = await Listing.findByIdAndUpdate(id, {...req.body.listing});
 
     if (listingData.image && listingData.image.url) {
         let imageUrl = listingData.image.url;
 
         if (imageUrl.includes("drive.google.com/file/d/")) {
             const match = imageUrl.match(/\/file\/d\/([^/]+)/);
-
-
             if (match && match[1]) {
                 const fileId = match[1];
-                const newUrl = `https://lh3.googleusercontent.com/d/FILE_ID`;
-                listingData.image.url = newUrl; // Update the URL
-                console.log("Generated Image URL on update:", newUrl);
+                const newUrl = `https://lh3.googleusercontent.com/d/${fileId}`;
+                listingData.image.url = newUrl;
             }
         }
     }
 
-    // if(typeof req.file !== "undefined"){
-    //         let listing  = await Listing.findByIdAndUpdate(id, {...req.body.listing});
-
-    //     let url = req.file.path;
-    //     let filename = req.file.filename;
-    //     listing.image = { url, filename };
-    //     await listing.save();
-    // }
+    let listing = await Listing.findByIdAndUpdate(id, { ...listingData }, { new: true });
 
     if (typeof req.file !== "undefined") {
-        // If yes, get the new URL and filename from Cloudinary
         let url = req.file.path;
         let filename = req.file.filename;
-        // Update the listing's image property
         listing.image = { url, filename };
-        // Save the changes to the image
         await listing.save();
     }
 
     req.flash("success", "Listing Updated Successfully");
     res.redirect(`/listings/${id}`);
-}
+};
 
 
 module.exports.destroyListing = async (req, res) => {
-    console.log(`[DELETE /listings/:id] Route handler started.`);
     let { id } = req.params;
-    
-    // This logic might need to be adjusted based on your post-delete middleware removal
+    let listing = await Listing.findById(id);
+    if (listing && listing.reviews && listing.reviews.length > 0) {
+        await Review.deleteMany({ _id: { $in: listing.reviews } });
+    }
     await Listing.findByIdAndDelete(id);
     
     req.flash("success", "Listing Deleted Successfully");
-    console.log(`[DELETE /listings/:id] Logic complete. Redirecting now.`);
     res.redirect("/listings");
-}
-
-
-//using regex as it gives the best results instead of only mongodb commands
-module.exports.index = async(req, res) => {
-    const { search, category } = req.query;
-    let allListings;
-
-    if(search){
-        allListings = await Listing.find({
-            $or : [
-                { title : {$regex : search, $options : 'i'} },
-                {location : {$regex : search, $options : 'i'}},
-                {country : {$regex : search, $options : 'i'}},
-            ]
-        });
-    }
-    else if(category){
-        allListings = await Listing.find({category : category});
-    }
-    else{
-        allListings = await Listing.find({});
-    }
-
-    res.render("listings/index.ejs", { allListings, search });
-
-}
+};

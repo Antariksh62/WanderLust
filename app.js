@@ -79,15 +79,16 @@ const store = MongoStore.create({
         secret : process.env.SECRET,
     },
     touchAfter : 24 * 3600,
-})
+});
+app.sessionStore = store;
 
 const sessionOptions = {
     store : store,
     secret : process.env.SECRET,
     resave : false,
-    saveUninitialized : true,
+    saveUninitialized : false,
     cookie : {
-        expire : Date.now() + 1000 * 60 * 60 * 24 * 7,
+        expires : new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
         maxAge : 1000 * 60 * 60 * 24 * 7,
         httpOnly : true, //cookie is not accessable via JS browser
         // secure : true //send cookie only via https
@@ -101,11 +102,11 @@ store.on("error", () => {
 app.use(session(sessionOptions));
 
 
-/*Passport realted */
+/*Passport realted shit*/
 app.use(passport.initialize());
 app.use(passport.session());
 
-// use static authenticate method of model in LocalStrategy
+//use static authenticate method of model in Localstrategy
 passport.use(new LocalStrategy(User.authenticate()));
 
 
@@ -132,7 +133,6 @@ app.get("/demouser", async (req, res) => {
     res.send(registeredUser);
 })
 
-// --- PASTE THIS IN APP.JS (Near the top, after your const requires) ---
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
@@ -171,8 +171,15 @@ app.use("/listings/:id/reviews", reviewsRouter);
 app.use("/", userRouter);
 
 app.get("/", (req, res) => {
-    console.log("Proof that Tony stark has a heart");
     res.redirect("/listings");
+});
+
+app.get("/privacy", (req, res) => {
+    res.render("listings/privacy.ejs", { title: "Privacy Policy" });
+});
+
+app.get("/terms", (req, res) => {
+    res.render("listings/terms.ejs", { title: "Terms of Service" });
 });
 
 //to handle : when you enter a route that does not exist
@@ -187,6 +194,11 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render("./listings/error.ejs", {err});
 });
 
-app.listen(process.env.PORT || 8080, () => {
-    console.log("Server is listening on port 8080");
-});
+if (require.main === module) {
+    const PORT = process.env.PORT || 8080;
+    app.listen(PORT, () => {
+        console.log(`Server is listening on port ${PORT}`);
+    });
+}
+
+module.exports = app;

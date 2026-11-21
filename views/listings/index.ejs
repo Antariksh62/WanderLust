@@ -81,14 +81,14 @@
             </div>
         </a>
 
-        <a href="/listings?category=Moutains" class="filter-link" style="color: rgb(255, 56, 92); text-decoration: none;">
+        <a href="/listings?category=Mountains" class="filter-link" style="color: rgb(255, 56, 92); text-decoration: none;">
             <div class="filter">
                 <i class="fa-solid fa-mountain"></i>
                 <p>Mountains</p>
             </div>
         </a>
 
-        <a href="/listings?category=AmazingPools"  class="filter-link" style="color: rgb(255, 56, 92); text-decoration: none; ">
+        <a href="/listings?category=Amazing%20Pools"  class="filter-link" style="color: rgb(255, 56, 92); text-decoration: none; ">
             <div class="filter" style="margin-left: 0px !important; margin-right: 0px; ">
                 <i class="fa-solid fa-person-swimming"></i>
                 <p>Amazing pools</p>
@@ -145,7 +145,7 @@
     <% if(allListings.length === 0) { %>
         <div class="alert alert-danger col-8 offset-2 mt-5" role="alert" style="text-align: center;">
             <h4 class="alert-heading"><i class="fa-solid fa-triangle-exclamation"></i> No Listings Found!</h4>
-            <p>We couldn't find any matches for "<b><%= search %></b>".</p>
+            <p>We couldn't find any matches for "<b><%= typeof search !== 'undefined' && search ? search : 'your query' %></b>".</p>
             <p class="mb-0">Try searching for a different location or check your spelling.</p>
             <a href="/listings" class="btn btn-outline-danger mt-3">View All Listings</a>
         </div>

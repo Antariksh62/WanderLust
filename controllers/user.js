@@ -4,7 +4,7 @@ module.exports.renderSignUpForm = (req, res) => {
     res.render("users/signup.ejs");
 }
 
-module.exports.signUp = async (req, res) => {
+module.exports.signUp = async (req, res, next) => {
     try{
         let { name, username, email, password } = req.body;
         const newUser = new User({ name, username, email});
@@ -44,10 +44,10 @@ module.exports.logIn = async (req, res) => {
     res.redirect(redirectUrl);
 }
 
-module.exports.logOut = (req, res) => {
+module.exports.logOut = (req, res, next) => {
     req.logout((err) => {
         if(err){
-            next(err);
+            return next(err);
         }
         req.flash("success", "You are Logged Out Now, see you soon");
         return res.redirect("/listings");
